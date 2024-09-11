@@ -51,7 +51,7 @@ try
         Expand-Archive -Path $HawDictZipFile -DestinationPath $OutputRoot -Force
     }
 
-    $WordListDir = "wordlists"
+    $WordListDir = "src/wordlists"
 
     Write-Host Running HawDict...
     $HawDictDir = Join-Path $OutputRoot "HawDict.Unpacked"

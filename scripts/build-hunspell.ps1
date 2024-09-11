@@ -20,14 +20,14 @@ try
     }
     New-Item -Path $HunspellOutputDir -Type Directory -Force | Out-Null
     
-    $HunspellInputDir = Join-Path $RepoRoot "hunspell"
+    $HunspellInputDir = Join-Path $RepoRoot "src/hunspell"
 
-    $PukuiElbertFile = "wordlists/PukuiElbert.txt"
+    $PukuiElbertFile = "src/wordlists/PukuiElbert.txt"
     Write-Host Processing $PukuiElbertFile...
     $PukuiElbertRaw = Get-Content -Path $PukuiElbertFile
     $PukuiElbertClean = $PukuiElbertRaw -Split ",| " | ForEach-Object { return $_.Replace(".", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
-    $MamakaKaiaoFile = "wordlists/MamakaKaiao.txt"
+    $MamakaKaiaoFile = "src/wordlists/MamakaKaiao.txt"
     Write-Host Processing $MamakaKaiaoFile...
     $MamakaKaiaoRaw = Get-Content -Path $MamakaKaiaoFile
     $MamakaKaiaoClean = $MamakaKaiaoRaw -Split " " | ForEach-Object { return $_.Replace("·", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
