@@ -1,0 +1,32 @@
+name: CI Build
+
+env:
+  BuildDir: ./bld
+  ScriptDir: ./scripts
+  SrcDir: ./src
+
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  ci_build:
+    name: CI Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build Hunspell dictionary
+      run: ${{ env.ScriptDir }}/build-hunspell.ps1
+
+    - name: Upload Hunspell dictionary
+      uses: actions/upload-artifact@v4
+      with:
+        name: hunspell
+        path: ${{ env.BuildDir }}/hunspell
