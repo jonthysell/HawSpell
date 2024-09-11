@@ -25,12 +25,12 @@ try
     $PukuiElbertFile = "wordlists/PukuiElbert.txt"
     Write-Host Processing $PukuiElbertFile...
     $PukuiElbertRaw = Get-Content -Path $PukuiElbertFile
-    $PukuiElbertClean = $PukuiElbertRaw -Split "," | ForEach-Object { return $_.Replace(".", "").Trim() }
+    $PukuiElbertClean = $PukuiElbertRaw -Split ",| " | ForEach-Object { return $_.Replace(".", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
     $MamakaKaiaoFile = "wordlists/MamakaKaiao.txt"
     Write-Host Processing $MamakaKaiaoFile...
     $MamakaKaiaoRaw = Get-Content -Path $MamakaKaiaoFile
-    $MamakaKaiaoClean = $MamakaKaiaoRaw | ForEach-Object { return $_.Replace("·", "").Trim() }
+    $MamakaKaiaoClean = $MamakaKaiaoRaw -Split " " | ForEach-Object { return $_.Replace("·", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
     Write-Host Combining word lists...
     $FinalWords = $($PukuiElbertClean; $MamakaKaiaoClean) | Select-Object -Unique | Sort-Object
