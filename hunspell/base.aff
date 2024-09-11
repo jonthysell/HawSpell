@@ -1,2 +1,19 @@
 SET UTF-8
 LANG HAW
+
+WORDCHARS `'ʻ
+
+MAP 9
+MAP aā
+MAP eē
+MAP eē
+MAP oō
+MAP uū
+MAP kt
+MAP lr
+MAP wv
+MAP `'ʻ
+
+ICONV 2
+ICONV ' ʻ
+ICONF ` ʻ
