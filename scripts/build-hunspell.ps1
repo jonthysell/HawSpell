@@ -59,7 +59,7 @@ try
     $TryChars = ""
     $CharHistogram.GetEnumerator() | Sort-Object { $_.Value } -Descending | ForEach-Object { $TryChars += $_.Key }
 
-    $TryDirective = "TRY $TryChars" + $TryChars.ToUpper().Replace("ʻ", "") + "ʻ"
+    $TryDirective = "TRY " + $TryChars.Replace("ʻ", "") + $TryChars.ToUpper().Replace("ʻ", "") + "ʻ"
     Write-Host "Adding TRY directive to $HawAffFile..."
     "`r`n$TryDirective" | Add-Content -Path $HawAffFile
 
