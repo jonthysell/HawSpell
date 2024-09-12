@@ -19,21 +19,42 @@ try
         Remove-Item $HunspellOutputDir -Recurse
     }
     New-Item -Path $HunspellOutputDir -Type Directory -Force | Out-Null
-    
+
     $HunspellInputDir = Join-Path $RepoRoot "src/hunspell"
 
     $PukuiElbertFile = "src/wordlists/PukuiElbert.txt"
-    Write-Host Processing $PukuiElbertFile...
+    Write-Host Reading $PukuiElbertFile...
     $PukuiElbertRaw = Get-Content -Path $PukuiElbertFile
-    $PukuiElbertClean = $PukuiElbertRaw -Split ",| " | ForEach-Object { return $_.Replace(".", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
+    $PukuiElbertClean = $PukuiElbertRaw -Split ",| |…" | ForEach-Object { return $_.Replace(".", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
+    $MamakaKaiaoExclude = @("pepa 11`" X 17`"")
     $MamakaKaiaoFile = "src/wordlists/MamakaKaiao.txt"
-    Write-Host Processing $MamakaKaiaoFile...
+    Write-Host Reading $MamakaKaiaoFile...
     $MamakaKaiaoRaw = Get-Content -Path $MamakaKaiaoFile
-    $MamakaKaiaoClean = $MamakaKaiaoRaw -Split " " | ForEach-Object { return $_.Replace("·", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
+    $MamakaKaiaoClean = ($MamakaKaiaoRaw | Where-Object { -not $MamakaKaiaoExclude.Contains($_) }) -Split " " | ForEach-Object { return $_.Replace("·", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
-    Write-Host Combining word lists...
-    $FinalWords = $($PukuiElbertClean; $MamakaKaiaoClean) | Select-Object -Unique | Sort-Object
+    Write-Host Parsing word lists...
+    $WordSet = [System.Collections.Generic.HashSet[string]]@()
+    $PrefixSet = [System.Collections.Generic.HashSet[string]]@()
+    $SuffixSet = [System.Collections.Generic.HashSet[string]]@()
+
+    $($PukuiElbertClean; $MamakaKaiaoClean) | ForEach-Object {
+        $affix = $False;
+        if ($_.StartsWith("-")) {
+            $PrefixSet.Add($_.Replace("-", ""))
+            $affix = $True
+        }
+        if ($_.EndsWith("-")) {
+            $SuffixSet.Add($_.Replace("-", ""))
+            $affix = $True
+        }
+
+        if (-not $affix) {
+            $WordSet.Add($_.Replace("-", ""))
+        }
+    } | Out-Null
+
+    $FinalWords = $WordSet | Sort-Object
 
     $HawDicFile = Join-Path $HunspellOutputDir "haw.dic"
     Write-Host Creating $HawDicFile...
@@ -62,8 +83,6 @@ try
     $TryDirective = "TRY " + $TryChars.Replace("ʻ", "") + $TryChars.ToUpper().Replace("ʻ", "") + "ʻ"
     Write-Host "Adding TRY directive to $HawAffFile..."
     "`r`n$TryDirective" | Add-Content -Path $HawAffFile
-
-
 }
 finally
 {
