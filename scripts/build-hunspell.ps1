@@ -37,12 +37,18 @@ try
     $MamakaKaiaoRaw = Get-Content -Path $MamakaKaiaoFile
     $MamakaKaiaoClean = (($MamakaKaiaoRaw -Replace $MamakaKaiaoExclueRegex,"") | Where-Object { -not $MamakaKaiaoExclude.Contains($_) }) -Split " |\(|\)" | ForEach-Object { return $_.Replace("·", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
+    # Read numbers word list, split multiple words, and exlude known problems
+    $NumbersFile = "src/wordlists/numbers.txt"
+    Write-Host Reading $NumbersFile...
+    $NumbersRaw = Get-Content -Path $NumbersFile
+    $NumbersClean = $NumbersRaw -Split ",| " | ForEach-Object { return $_.Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
+
     Write-Host Parsing word lists...
     $WordSet = [System.Collections.Generic.HashSet[string]]@()
     $PrefixSet = [System.Collections.Generic.HashSet[string]]@()
     $SuffixSet = [System.Collections.Generic.HashSet[string]]@()
 
-    $($PukuiElbertClean; $MamakaKaiaoClean) | ForEach-Object {
+    $($PukuiElbertClean; $MamakaKaiaoClean; $NumbersClean) | ForEach-Object {
         # Normalize word removing syllables denoted by hyphens
         $cleaned = $_.Replace("-", "")
 
