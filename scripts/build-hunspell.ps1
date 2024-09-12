@@ -22,16 +22,18 @@ try
 
     $HunspellInputDir = Join-Path $RepoRoot "src/hunspell"
 
+    $ParenRegex = "\(.*\)"
+
     $PukuiElbertFile = "src/wordlists/PukuiElbert.txt"
     Write-Host Reading $PukuiElbertFile...
     $PukuiElbertRaw = Get-Content -Path $PukuiElbertFile
-    $PukuiElbertClean = $PukuiElbertRaw -Split ",| |…" | ForEach-Object { return $_.Replace(".", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
+    $PukuiElbertClean = ($PukuiElbertRaw -Replace $ParenRegex,"") -Split ",| |…" | ForEach-Object { return $_.Replace(".", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
     $MamakaKaiaoExclude = @("pepa 11`" X 17`"")
     $MamakaKaiaoFile = "src/wordlists/MamakaKaiao.txt"
     Write-Host Reading $MamakaKaiaoFile...
     $MamakaKaiaoRaw = Get-Content -Path $MamakaKaiaoFile
-    $MamakaKaiaoClean = ($MamakaKaiaoRaw | Where-Object { -not $MamakaKaiaoExclude.Contains($_) }) -Split " " | ForEach-Object { return $_.Replace("·", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
+    $MamakaKaiaoClean = (($MamakaKaiaoRaw -Replace $ParenRegex,"") | Where-Object { -not $MamakaKaiaoExclude.Contains($_) }) -Split " " | ForEach-Object { return $_.Replace("·", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
     Write-Host Parsing word lists...
     $WordSet = [System.Collections.Generic.HashSet[string]]@()
@@ -39,18 +41,23 @@ try
     $SuffixSet = [System.Collections.Generic.HashSet[string]]@()
 
     $($PukuiElbertClean; $MamakaKaiaoClean) | ForEach-Object {
-        $affix = $False;
+        $cleaned = $_.Replace("-", "")
+        if ($cleaned.Length -gt 1) {
+            $cleaned = $cleaned[0].ToString() + $cleaned.Substring(1).ToLower()
+        }
+
+        $affix = $False
         if ($_.StartsWith("-")) {
-            $PrefixSet.Add($_.Replace("-", ""))
+            $PrefixSet.Add($cleaned)
             $affix = $True
         }
         if ($_.EndsWith("-")) {
-            $SuffixSet.Add($_.Replace("-", ""))
+            $SuffixSet.Add($cleaned)
             $affix = $True
         }
 
         if (-not $affix) {
-            $WordSet.Add($_.Replace("-", ""))
+            $WordSet.Add($cleaned)
         }
     } | Out-Null
 
