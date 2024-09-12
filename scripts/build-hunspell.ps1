@@ -22,18 +22,19 @@ try
 
     $HunspellInputDir = Join-Path $RepoRoot "src/hunspell"
 
-    $ParenRegex = "\(.*\)"
+    $PukuiElbertExclueRegex = "\(noun|\(or|phrase|\(verb"
 
     $PukuiElbertFile = "src/wordlists/PukuiElbert.txt"
     Write-Host Reading $PukuiElbertFile...
     $PukuiElbertRaw = Get-Content -Path $PukuiElbertFile
-    $PukuiElbertClean = ($PukuiElbertRaw -Replace $ParenRegex,"") -Split ",| |…" | ForEach-Object { return $_.Replace(".", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
+    $PukuiElbertClean = ($PukuiElbertRaw -Replace $PukuiElbertExclueRegex,"") -Split ",| |…|\(|\)|\?" | ForEach-Object { return $_.Replace(".", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
+    $MamakaKaiaoExclueRegex = "\(i\/iā\)"
     $MamakaKaiaoExclude = @("pepa 11`" X 17`"")
     $MamakaKaiaoFile = "src/wordlists/MamakaKaiao.txt"
     Write-Host Reading $MamakaKaiaoFile...
     $MamakaKaiaoRaw = Get-Content -Path $MamakaKaiaoFile
-    $MamakaKaiaoClean = (($MamakaKaiaoRaw -Replace $ParenRegex,"") | Where-Object { -not $MamakaKaiaoExclude.Contains($_) }) -Split " " | ForEach-Object { return $_.Replace("·", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
+    $MamakaKaiaoClean = (($MamakaKaiaoRaw -Replace $MamakaKaiaoExclueRegex,"") | Where-Object { -not $MamakaKaiaoExclude.Contains($_) }) -Split " |\(|\)" | ForEach-Object { return $_.Replace("·", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
     Write-Host Parsing word lists...
     $WordSet = [System.Collections.Generic.HashSet[string]]@()
