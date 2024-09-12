@@ -1,8 +1,8 @@
-ʻole
-ʻekahi
+ʻole, ʻaʻohe
+ʻekahi, hoʻokahi
 ʻelua
 ʻekolu
-ʻehā
+ʻehā, kāuna
 ʻelima
 ʻeono
 ʻehiku
@@ -38,7 +38,7 @@ kanakolukūmāono, kanakolukumamāono
 kanakolukūmāhiku, kanakolukumamāhiku
 kanakolukūmāwalu, kanakolukumamāwalu
 kanakolukūmāiwa, kanakolukumamāiwa
-kanahā
+kanahā, kaʻau
 kanahākūmākahi, kanahākumamākahi
 kanahākūmālua, kanahākumamālua
 kanahākūmākolu, kanahākumamākolu
@@ -98,4 +98,4 @@ kanaiwakūmāono, kanaiwakumamāono
 kanaiwakūmāhiku, kanaiwakumamāhiku
 kanaiwakūmāwalu, kanaiwakumamāwalu
 kanaiwakūmāiwa, kanaiwakumamāiwa
-hanele
+hanele, haneli
