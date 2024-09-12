@@ -22,13 +22,14 @@ try
 
     $HunspellInputDir = Join-Path $RepoRoot "src/hunspell"
 
+    # Read PukuiElbert word list, split multiple words, and exlude known problems
     $PukuiElbertExclueRegex = "\(noun|\(or|phrase|\(verb"
-
     $PukuiElbertFile = "src/wordlists/PukuiElbert.txt"
     Write-Host Reading $PukuiElbertFile...
     $PukuiElbertRaw = Get-Content -Path $PukuiElbertFile
     $PukuiElbertClean = ($PukuiElbertRaw -Replace $PukuiElbertExclueRegex,"") -Split ",| |…|\(|\)|\?" | ForEach-Object { return $_.Replace(".", "").Trim() } | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
 
+    # Read MamakaKaiao word list, split multiple words, and exlude known problems
     $MamakaKaiaoExclueRegex = "\(i\/iā\)"
     $MamakaKaiaoExclude = @("pepa 11`" X 17`"")
     $MamakaKaiaoFile = "src/wordlists/MamakaKaiao.txt"
@@ -42,9 +43,23 @@ try
     $SuffixSet = [System.Collections.Generic.HashSet[string]]@()
 
     $($PukuiElbertClean; $MamakaKaiaoClean) | ForEach-Object {
+        # Normalize word removing syllables denoted by hyphens
         $cleaned = $_.Replace("-", "")
-        if ($cleaned.Length -gt 1) {
-            $cleaned = $cleaned[0].ToString() + $cleaned.Substring(1).ToLower()
+
+        # Normalize word by fixing capitalization
+        $capitalized = ""
+        $firstAlphaChar = 0
+        if ($cleaned[$firstAlphaChar] -eq 'ʻ') {
+            # Need to make sure we capitalize the letter *after* the ʻokina
+            $firstAlphaChar++
+        }
+        if ($cleaned.Length -gt $firstAlphaChar + 1) {
+            # Normalize the word maintaining its existing "first-letter" capitalization
+            $cleaned = $cleaned.Substring(0, $firstAlphaChar + 1) + $cleaned.Substring($firstAlphaChar + 1).ToLower()
+            if ($firstAlphaChar -eq 1) {
+                # Word started with ʻokina, add capitalized version with
+                $capitalized = $cleaned.Substring(0, $firstAlphaChar + 1).ToUpper() + $cleaned.Substring($firstAlphaChar + 1).ToLower()
+            }
         }
 
         $affix = $False
@@ -59,6 +74,9 @@ try
 
         if (-not $affix) {
             $WordSet.Add($cleaned)
+            if ($capitalized -ne "") {
+                $WordSet.Add($capitalized)
+            }
         }
     } | Out-Null
 
@@ -89,7 +107,7 @@ try
     $CharHistogram.GetEnumerator() | Sort-Object { $_.Value } -Descending | ForEach-Object { $TryChars += $_.Key }
 
     $TryDirective = "TRY " + $TryChars.Replace("ʻ", "") + $TryChars.ToUpper().Replace("ʻ", "") + "ʻ"
-    Write-Host "Adding TRY directive to $HawAffFile..."
+    Write-Host "Adding $TryDirective to $HawAffFile..."
     "`r`n$TryDirective" | Add-Content -Path $HawAffFile
 }
 finally
