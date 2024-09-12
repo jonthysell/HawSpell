@@ -12,8 +12,9 @@ function Update-WordListFromHawDict {
 
     Write-Host Found $InputData.Length raw entries in $InputPath
 
+    $WordSet = [System.Collections.Generic.HashSet[string]]@()
     Write-Host Updating $OutputPath...
-    $InputData | Select-Object -ExpandProperty Term -Unique | Sort-Object | Set-Content -Path $OutputPath
+    $InputData | Select-Object -ExpandProperty Term | Where-Object { $WordSet.Add($_) } | Sort-Object | Set-Content -Path $OutputPath
 }
 
 [string] $RepoRoot = Resolve-Path "$PSScriptRoot\.."
