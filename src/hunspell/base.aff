@@ -1,6 +1,8 @@
 SET UTF-8
 LANG HAW
 
+TRY {TRY}
+
 WORDCHARS `'ʻ
 
 MAP 14

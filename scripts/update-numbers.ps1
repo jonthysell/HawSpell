@@ -2,7 +2,7 @@ param(
     [switch]$Clean = $False
 )
 
-[string] $RepoRoot = Resolve-Path "$PSScriptRoot\.."
+[string] $RepoRoot = Resolve-Path "$PSScriptRoot/.."
 
 [string] $OutputRoot = "bld"
 

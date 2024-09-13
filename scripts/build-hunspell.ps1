@@ -2,12 +2,14 @@ param(
     [switch]$Clean = $False
 )
 
-[string] $RepoRoot = Resolve-Path "$PSScriptRoot\.."
+[string] $RepoRoot = Resolve-Path "$PSScriptRoot/.."
 
 [string] $OutputRoot = "bld"
 
 $StartingLocation = Get-Location
 Set-Location -Path $RepoRoot
+
+. (Join-Path $RepoRoot "scripts/utils.ps1")
 
 try
 {
@@ -93,9 +95,7 @@ try
     $FinalWords.Length | Set-Content -Path $HawDicFile
     $FinalWords | Add-Content -Path $HawDicFile
 
-    $HawAffFile = Join-Path $HunspellOutputDir "haw.aff"
-    Write-Host Creating $HawAffFile...
-    Copy-Item -Path (Join-Path $HunspellInputDir "base.aff") -Destination $HawAffFile -Force
+    $AffReplacements = @{}
 
     Write-Host Calculating character histogram...
     $CharHistogram = @{}
@@ -112,9 +112,15 @@ try
     $TryChars = ""
     $CharHistogram.GetEnumerator() | Sort-Object { $_.Value } -Descending | ForEach-Object { $TryChars += $_.Key }
 
-    $TryDirective = "TRY " + $TryChars.Replace("ʻ", "") + $TryChars.ToUpper().Replace("ʻ", "") + "ʻ"
-    Write-Host "Adding $TryDirective to $HawAffFile..."
-    "`r`n$TryDirective" | Add-Content -Path $HawAffFile
+    $TryDirective = $TryChars.Replace("ʻ", "") + $TryChars.ToUpper().Replace("ʻ", "") + "ʻ"
+    Write-Host "Calculated: TRY $TryDirective"
+
+    $AffReplacements["TRY"] = $TryDirective
+
+    $BaseAffFile = Join-Path $HunspellInputDir "base.aff"
+    $HawAffFile = Join-Path $HunspellOutputDir "haw.aff"
+    Write-Host Creating $HawAffFile...
+    CopyAndReplace-TemplateFile -InputPath $BaseAffFile -OutputPath $HawAffFile -Replacements $AffReplacements
 }
 finally
 {

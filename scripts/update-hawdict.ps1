@@ -17,7 +17,7 @@ function Update-WordListFromHawDict {
     $InputData | Select-Object -ExpandProperty Term | Where-Object { $WordSet.Add($_) } | Sort-Object | Set-Content -Path $OutputPath
 }
 
-[string] $RepoRoot = Resolve-Path "$PSScriptRoot\.."
+[string] $RepoRoot = Resolve-Path "$PSScriptRoot/.."
 
 [string] $OutputRoot = "bld"
 
