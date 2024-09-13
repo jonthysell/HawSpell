@@ -21,3 +21,13 @@ function CopyAndReplace-TemplateFile {
     }
     $NewContent | Set-Content -Path $OutputPath -Force
 }
+
+function Get-Version {
+    param()
+
+    [string] $RepoRoot = Resolve-Path "$PSScriptRoot/.."
+
+    $VersionFile = Join-Path $RepoRoot "src/version.txt"
+    $Version = Get-Content -Path $VersionFile
+    return $Version.Trim()
+}

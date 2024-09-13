@@ -100,6 +100,8 @@ try
 
     $AffReplacements = @{}
 
+    $AffReplacements["VERSION"] = Get-Version
+
     Write-Host Calculating character histogram...
     $CharHistogram = @{}
     $ValidChars = "aāeēiīoōuūhklmnpwʻ"
