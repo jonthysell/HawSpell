@@ -1,3 +1,6 @@
+# Copyright (c) Jon Thysell <http://jonthysell.com>
+# Licensed under the MIT License.
+
 function CopyAndReplace-TemplateFile {
     param(
         [string]$InputPath,
