@@ -56,7 +56,7 @@ try
 
     Write-Host Running HawDict...
     $HawDictDir = Join-Path $OutputRoot "HawDict.Unpacked"
-    & dotnet (Join-Path $HawDictDir "HawDict.dll") $HawDictDir
+    & dotnet (Join-Path $HawDictDir "HawDict.dll") -f CleanTxt $HawDictDir
 
     Update-WordListFromHawDict -InputPath (Join-Path $HawDictDir "PukuiElbert/PukuiElbert.HawToEng.clean.txt") -OutputPath (Join-Path $WordListDir "PukuiElbert.txt")
     Update-WordListFromHawDict -InputPath (Join-Path $HawDictDir "MamakaKaiao/MamakaKaiao.HawToEng.clean.txt") -OutputPath (Join-Path $WordListDir "MamakaKaiao.txt")
