@@ -3,12 +3,17 @@ LANG HAW
 
 WORDCHARS `'ʻ
 
-MAP 9
+MAP 14
 MAP aā(ʻa)(ʻā)
+MAP AĀ(ʻA)(ʻĀ)
 MAP eē(ʻe)(ʻē)
+MAP EĒ(ʻE)(ʻĒ)
 MAP iī(ʻi)(ʻī)
+MAP IĪ(ʻI)(ʻĪ)
 MAP oō(ʻo)(ʻō)
+MAP OŌ(ʻO)(ʻŌ)
 MAP uū(ʻu)(ʻū)
+MAP UŪ(ʻU)(ʻŪ)
 MAP kt
 MAP lr
 MAP wv
