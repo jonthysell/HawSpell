@@ -30,3 +30,12 @@ jobs:
       with:
         name: hunspell
         path: ${{ env.BuildDir }}/hunspell
+    
+    - name: Build Firefox extension
+      run: ${{ env.ScriptDir }}/build-firefox.ps1
+
+    - name: Upload Firefox extension
+      uses: actions/upload-artifact@v4
+      with:
+        name: firefox
+        path: ${{ env.BuildDir }}/firefox

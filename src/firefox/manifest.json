@@ -1,0 +1,17 @@
+{
+    "name": "HawSpell Hawaiian Dictionary",
+    "description": "Hawaiian spell-checking dictionary",
+    "version": "{VERSION}",
+    "author": "Jon Thysell",
+    "homepage_url": "https://github.com/jonthysell/HawSpell",
+    "manifest_version": 2,
+    "dictionaries": {
+        "haw": "dictionaries/haw.dic"
+    },
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "{44533360-8207-11ef-8c1e-0800200c9a66}"
+        },
+        "gecko_android": {}
+    }
+}
