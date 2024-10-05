@@ -1,5 +1,5 @@
 {
-    "name": "HawSpell Hawaiian Dictionary",
+    "name": "HawSpell (Hawaiian Dictionary)",
     "description": "Hawaiian spell-checking dictionary",
     "version": "{VERSION}",
     "author": "Jon Thysell",
@@ -11,7 +11,6 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "{44533360-8207-11ef-8c1e-0800200c9a66}"
-        },
-        "gecko_android": {}
+        }
     }
 }
