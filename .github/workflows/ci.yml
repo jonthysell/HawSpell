@@ -25,7 +25,7 @@ jobs:
     - name: Build Hunspell dictionary
       run: ${{ env.ScriptDir }}/build-hunspell.ps1
 
-    - name: Upload Hunspell dictionary
+    - name: Upload Hunspell build files
       uses: actions/upload-artifact@v4
       with:
         name: hunspell
@@ -34,8 +34,16 @@ jobs:
     - name: Build Firefox extension
       run: ${{ env.ScriptDir }}/build-firefox.ps1
 
-    - name: Upload Firefox extension
+    - name: Upload Firefox build files
       uses: actions/upload-artifact@v4
       with:
         name: firefox
         path: ${{ env.BuildDir }}/firefox
+
+    - name: Upload final packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: packages
+        path: |
+          ${{ env.BuildDir }}/HawSpell_*.zip
+          ${{ env.BuildDir }}/HawSpell_*.xpi

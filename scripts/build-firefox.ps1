@@ -18,6 +18,11 @@ try
 {
     New-Item -Path $OutputRoot -Type Directory -Force | Out-Null
 
+    if ($Clean) {
+        Write-Host Cleaning $OutputRoot\HawSpell_*.xpi...
+        Remove-Item $OutputRoot\HawSpell_*.xpi
+    }
+
     $FirefoxOutputDir = Join-Path $OutputRoot "firefox"
     if ((Test-Path $FirefoxOutputDir) -and $Clean) {
         Write-Host Cleaning $FirefoxOutputDir...
@@ -50,7 +55,14 @@ try
     Copy-Item -Path $HunspellAffFile -Dest (Join-Path $DictionariesOutputDir "haw.aff")
     Copy-Item -Path $HunspellDicFile -Dest (Join-Path $DictionariesOutputDir "haw.dic")
 
-    Copy-LicenseAndReadme -OutputPath $FirefoxOutputDir
+    $ArchiveName = Join-Path $OutputRoot "HawSpell_$($ManifestReplacements["VERSION"]).xpi"
+    Write-Host Creating $ArchiveName...
+    $ArchiveParams = @{
+        Path = "$FirefoxOutputDir/*", (Join-Path $RepoRoot "README.md"), (Join-Path $RepoRoot "LICENSE.md")
+        DestinationPath = $ArchiveName
+        Force = $True
+    }
+    Compress-Archive @ArchiveParams
 }
 finally
 {

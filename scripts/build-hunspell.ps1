@@ -18,6 +18,11 @@ try
 {
     New-Item -Path $OutputRoot -Type Directory -Force | Out-Null
 
+    if ($Clean) {
+        Write-Host Cleaning $OutputRoot\HawSpell_*.zip...
+        Remove-Item $OutputRoot\HawSpell_*.zip
+    }
+
     $HunspellOutputDir = Join-Path $OutputRoot "hunspell"
     if ((Test-Path $HunspellOutputDir) -and $Clean) {
         Write-Host Cleaning $HunspellOutputDir...
@@ -126,7 +131,14 @@ try
     $HawAffFile = Join-Path $HunspellOutputDir "haw.aff"
     CopyAndReplace-TemplateFile -InputPath $BaseAffFile -OutputPath $HawAffFile -Replacements $AffReplacements
 
-    Copy-LicenseAndReadme -OutputPath $HunspellOutputDir
+    $ArchiveName = Join-Path $OutputRoot "HawSpell_$($AffReplacements["VERSION"]).zip"
+    Write-Host Creating $ArchiveName...
+    $ArchiveParams = @{
+        Path = "$HunspellOutputDir/*", (Join-Path $RepoRoot "README.md"), (Join-Path $RepoRoot "LICENSE.md")
+        DestinationPath = $ArchiveName
+        Force = $True
+    }
+    Compress-Archive @ArchiveParams
 }
 finally
 {
