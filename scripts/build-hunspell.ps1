@@ -82,11 +82,11 @@ try
         }
 
         $affix = $False
-        if ($_.StartsWith("-")) {
+        if ($_.EndsWith("-")) {
             $PrefixSet.Add($cleaned)
             $affix = $True
         }
-        if ($_.EndsWith("-")) {
+        if ($_.StartsWith("-")) {
             $SuffixSet.Add($cleaned)
             $affix = $True
         }
@@ -130,7 +130,7 @@ try
 
     $AffReplacements["TRY"] = $TryDirective
 
-    $BaseAffFile = Join-Path $HunspellInputDir "base.aff"
+    $BaseAffFile = Join-Path $HunspellInputDir "haw.aff"
     $HawAffFile = Join-Path $HunspellOutputDir "haw.aff"
     CopyAndReplace-TemplateFile -InputPath $BaseAffFile -OutputPath $HawAffFile -Replacements $AffReplacements
 
