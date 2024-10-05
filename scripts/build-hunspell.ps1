@@ -32,6 +32,9 @@ try
 
     $HunspellInputDir = Join-Path $RepoRoot "src/hunspell"
 
+    Write-Host Copying base files into $HunspellOutputDir...
+    Copy-Item -Path $HunspellInputDir/* -Dest $HunspellOutputDir -Recurse
+
     # Read PukuiElbert word list, split multiple words, and exlude known problems
     $PukuiElbertExclueRegex = "\(noun|\(or|phrase|\(verb"
     $PukuiElbertFile = "src/wordlists/PukuiElbert.txt"

@@ -32,6 +32,9 @@ try
 
     $FirefoxInputDir = Join-Path $RepoRoot "src/firefox"
 
+    Write-Host Copying base files into $FirefoxOutputDir...
+    Copy-Item -Path $FirefoxInputDir/* -Dest $FirefoxOutputDir -Recurse
+
     $ManifestReplacements = @{}
 
     $ManifestReplacements["VERSION"] = Get-Version
