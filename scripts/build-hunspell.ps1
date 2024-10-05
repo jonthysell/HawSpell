@@ -124,8 +124,9 @@ try
 
     $BaseAffFile = Join-Path $HunspellInputDir "base.aff"
     $HawAffFile = Join-Path $HunspellOutputDir "haw.aff"
-    Write-Host Creating $HawAffFile...
     CopyAndReplace-TemplateFile -InputPath $BaseAffFile -OutputPath $HawAffFile -Replacements $AffReplacements
+
+    Copy-LicenseAndReadme -OutputPath $HunspellOutputDir
 }
 finally
 {

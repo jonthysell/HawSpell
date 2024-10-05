@@ -8,6 +8,8 @@ function CopyAndReplace-TemplateFile {
         $Replacements
     )
 
+    Write-Host Creating $OutputPath...
+
     $RawContent = Get-Content -Path $InputPath
     $NewContent = $RawContent | ForEach-Object {
         $line = $_
@@ -30,4 +32,20 @@ function Get-Version {
     $VersionFile = Join-Path $RepoRoot "src/version.txt"
     $Version = Get-Content -Path $VersionFile
     return $Version.Trim()
+}
+
+function Copy-LicenseAndReadme {
+    param(
+        [string]$OutputPath
+    )
+
+    Write-Host Copy license and readme...
+
+    [string] $RepoRoot = Resolve-Path "$PSScriptRoot/.."
+
+    $LicenseFile = Join-Path $RepoRoot "LICENSE.md"
+    Copy-Item -Path $LicenseFile -Dest $OutputPath
+
+    $ReadMeFile = Join-Path $RepoRoot "README.md"
+    Copy-Item -Path $ReadMeFile -Dest $OutputPath
 }

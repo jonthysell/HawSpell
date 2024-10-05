@@ -33,7 +33,6 @@ try
 
     $BaseManifestFile = Join-Path $FirefoxInputDir "manifest.json"
     $ManifestFile = Join-Path $FirefoxOutputDir "manifest.json"
-    Write-Host Creating $BaseManifestFile...
     CopyAndReplace-TemplateFile -InputPath $BaseManifestFile -OutputPath $ManifestFile -Replacements $ManifestReplacements
 
     $HunspellOutputDir = Join-Path $OutputRoot "hunspell"
@@ -50,6 +49,8 @@ try
     Write-Host Copying hunspell files into $DictionariesOutputDir...
     Copy-Item -Path $HunspellAffFile -Dest (Join-Path $DictionariesOutputDir "haw.aff")
     Copy-Item -Path $HunspellDicFile -Dest (Join-Path $DictionariesOutputDir "haw.dic")
+
+    Copy-LicenseAndReadme -OutputPath $FirefoxOutputDir
 }
 finally
 {
