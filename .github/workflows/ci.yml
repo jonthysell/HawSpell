@@ -40,6 +40,15 @@ jobs:
         name: firefox
         path: ${{ env.BuildDir }}/firefox
 
+    - name: Build OpenOffice extension
+      run: ${{ env.ScriptDir }}/build-openoffice.ps1
+
+    - name: Upload OpenOffice build files
+      uses: actions/upload-artifact@v4
+      with:
+        name: openoffice
+        path: ${{ env.BuildDir }}/openoffice
+
     - name: Upload final packages
       uses: actions/upload-artifact@v4
       with:
@@ -47,3 +56,4 @@ jobs:
         path: |
           ${{ env.BuildDir }}/HawSpell_*.zip
           ${{ env.BuildDir }}/HawSpell_*.xpi
+          ${{ env.BuildDir }}/HawSpell_*.oxt

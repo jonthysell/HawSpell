@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<description xmlns="http://openoffice.org/extensions/description/2006"
+             xmlns:d="http://openoffice.org/extensions/description/2006"
+             xmlns:xlink="http://www.w3.org/1999/xlink">
+    <version value="{VERSION}" />
+    <identifier value="com.jonthysell.HawSpell" />
+    <display-name>
+        <name lang="en-US">HawSpell: Hawaiian spell-checking dictionary</name>
+    </display-name>
+    <platform value="all" />
+    <dependencies>
+        <OpenOffice.org-minimal-version d:name="OpenOffice.org 3.0"
+                                        value="3.0" />
+    </dependencies>
+</description>
