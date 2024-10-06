@@ -58,7 +58,7 @@ try
     $ArchiveName = Join-Path $OutputRoot "HawSpell_$($DescriptionReplacements["VERSION"]).oxt"
     Write-Host Creating $ArchiveName...
     $ArchiveParams = @{
-        Path = "$OpenOfficeOutputDir/*", (Join-Path $RepoRoot "README.md"), (Join-Path $RepoRoot "LICENSE.md")
+        Path = "$OpenOfficeOutputDir/*", (Join-Path $RepoRoot "README.md"), (Join-Path $RepoRoot "LICENSE.md"), (Join-Path $RepoRoot "CHANGELOG.md")
         DestinationPath = $ArchiveName
         Force = $True
     }

@@ -137,7 +137,7 @@ try
     $ArchiveName = Join-Path $OutputRoot "HawSpell_$($AffReplacements["VERSION"]).zip"
     Write-Host Creating $ArchiveName...
     $ArchiveParams = @{
-        Path = "$HunspellOutputDir/*", (Join-Path $RepoRoot "README.md"), (Join-Path $RepoRoot "LICENSE.md")
+        Path = "$HunspellOutputDir/*", (Join-Path $RepoRoot "README.md"), (Join-Path $RepoRoot "LICENSE.md"), (Join-Path $RepoRoot "CHANGELOG.md")
         DestinationPath = $ArchiveName
         Force = $True
     }

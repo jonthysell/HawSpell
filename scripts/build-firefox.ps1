@@ -61,7 +61,7 @@ try
     $ArchiveName = Join-Path $OutputRoot "HawSpell_$($ManifestReplacements["VERSION"]).xpi"
     Write-Host Creating $ArchiveName...
     $ArchiveParams = @{
-        Path = "$FirefoxOutputDir/*", (Join-Path $RepoRoot "README.md"), (Join-Path $RepoRoot "LICENSE.md")
+        Path = "$FirefoxOutputDir/*", (Join-Path $RepoRoot "README.md"), (Join-Path $RepoRoot "LICENSE.md"), (Join-Path $RepoRoot "CHANGELOG.md")
         DestinationPath = $ArchiveName
         Force = $True
     }
