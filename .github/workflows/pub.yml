@@ -1,4 +1,4 @@
-HawSpellVersionname: Publish Release
+name: Publish Release
 
 env:
   BuildDir: ./bld
